@@ -1,0 +1,99 @@
+---
+title: "Chapter 1"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+A category has objects and relations between objects (arrows). These relations compose.
+
+# 1.1
+
+Arrows are called _morphisms_.
+
+In Haskell, `::` means has type of.
+
+```
+f ∷ A → B
+```
+
+This indicates that f takes "A"s to "B"s.
+
+# 1.2
+
+Two properties all compositions must maintain.
+
+1. Compositions in any category must be associative.
+
+$$
+h \circ (g \circ f) = (h \circ g) \circ f = h \circ g \circ f
+$$
+
+2. There is an identity composition. Take $f$ with the same type signature as before.
+
+$$
+f \circ \text{id}_A = f \\
+$$
+
+$$
+\text{id}_B \circ f = f
+$$
+
+Haskell note:
+
+> Here’s the trick: names of concrete types always start with a capital letter, names of type variables start with a lowercase letter. 
+
+> To summarize: A category consists of objects and arrows (morphisms). Arrows can be composed, and the composition is associative. Every object has an identity arrow that serves as a unit under composition.
+
+# 1.3
+
+How do we split up programs? We must impose some structure in order to better understand programs, but the natural question is to what extent--i.e. how small should we slice up programs?
+
+The amount of information needed to use a chunk should increase at a lesser rate than the information needed to implement that chunk.
+
+> The idea is that, once a chunk is implemented, we can forget about the details of its implementation and concentrate on how it interacts with other chunks. 
+
+In FP, we do this by declaring functions.
+
+Category takes this to another extreme; objects are just objects--you know nothing about them besides their relations between other objects. In a sense, it seems like they are interfaces with only private methods which quibble and move about in known ways, but otherwise reveal no information.
+
+> In object-oriented programming, an idealized object is only visible through its abstract interface (pure surface, no volume), with methods playing the role of arrows.
+
+# 1.4
+
+## 1
+```{r}
+id <- \(x) x
+```
+
+## 2
+
+```{r}
+compose <- function(f, g) {
+  \(x) f(g(x))
+}
+```
+
+## 3
+
+```{r}
+sqr <- \(x) x^2
+
+compose(id, sqr)(6)
+sqr(6)
+```
+
+<!-- TODO: better way to compare functions? Quasiquotation shenanigans? -->
+
+## 4
+
+WWW could sorta be a category with pages being objects and cross-refs being arrows? Not associative though.
+
+## 5
+
+Not associative. A friends with B, B friends with C doesn't imply A friends with C.
+
+## 6
+
+If an edge from A to B and an edge from B to C implies existence of edge from A to C. Nodes are objects, edges are morphisms.

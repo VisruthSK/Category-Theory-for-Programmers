@@ -1,0 +1,139 @@
+---
+title: "Chapter 2"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+# 2.1
+Strong typing is nice. (I do wish R had optional types--[vapour](https://github.com/vapourlang/vapour) isn't as neat as R.)
+
+# 2.2
+> Category theory is about composing arrows. But not any two arrows can be composed.
+
+Types are important, and this is how composition is defined. Strong typing allows for better verification of this fact.
+
+Unit testing and strong typing aren't interchangeable--having both is nice, if the workspace you're in allows for it.
+
+# 2.3
+Types are sets of values.
+
+Set is a category of sets with set objects and functions as morphisms. Set is a special category because we can look at its elements.
+
+To make FP functions more like mathematical functions, we add the "bottom" value `_|_` which corresponds to a non-terminating computation.
+
+Functions that may return bottom are called partial, as opposed to total. The category of Haskell types and functions is technically "Hask" not "Set" but we shall ignore that and continue with "Set."
+
+# 2.4
+Operational semantics describes how a program executes with a formal (ideal) interpreter. The semantics of some languages are described using informal operational semantics, but this isn't conducive to proofs.
+
+Denotational semantics are based on maths; programming constructs are mapped to their mathematical interpretations. This allows you to prove the math, which neatly corresponds to proving a property of the program.
+
+# 2.5
+Pure functions are stateless and deterministic.
+
+Monads allow us to do cool things only using pure functions.
+
+# 2.6
+
+This is the Haskell type corresponding to the empty set.
+
+```
+absurd :: Void -> a 
+```
+
+It's polymorphic in return type.
+
+The singleton type (a la `void` from C++ etc.) is polymorphic in input type and returns a constant. This is a function from "void."
+
+```
+f44 :: () -> Integer
+f44 () = 44 
+```
+
+`()` is called "unit"
+
+> Functions that can be implemented with the same formula for any type are called parametrically polymorphic.
+
+This is a function to "void."
+
+```
+unit :: a -> () 
+unit _ = () 
+```
+
+# 2.7
+1. 
+```{r}
+library(rlang)
+
+memoize <- function(f) {
+  memory <- environment()
+
+  function(...) {
+    key <- paste0(..., collapse = "")
+
+    if (is.null(memory$key)) {
+      memory$key <- f(...)
+    }
+    memory$key
+  }
+}
+```
+
+```{r}
+test <- function(x) {
+  Sys.sleep(1)
+  x^2
+}
+```
+
+
+```{r}
+memoized_test <- memoize(test)
+memoized_test(6)
+
+bench::mark(test(6), memoized_test(6))
+```
+
+2.
+
+```{r}
+memoized_runif <- memoize(runif)
+
+memoized_runif(10)
+memoized_runif(10)
+```
+
+3.
+
+```{r}
+seeded_rng <- function(seed, n) {
+  set.seed(seed)
+  runif(n)
+}
+
+memoized_seeded_rng <- memoize(seeded_rng)
+
+memoized_seeded_rng(0, 10)
+memoized_seeded_rng(4, 10)
+```
+<!-- TODO: fix this -->
+
+Not working.
+
+4.
+Skipping C++ question.
+
+5. There are 4.
+
+
+```{r}
+id <- \(x) x
+negate <- \(x) !x
+T <- \(x) TRUE
+F <- \(x) FALSE
+```
+
+Should assert that argument is of type`logical` since R is untyped.
