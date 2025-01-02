@@ -1,0 +1,78 @@
+---
+title: "Chapter 3"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+# 3.1
+The trivial category exists, and doesn't have any objects nor morphisms. Think of it like an empty set.
+
+# 3.2
+You can convert a directed graph to a category. Add identity arrows. Then also add composable arrows. This might lead to infinite arrows, which is ok. This is called a free category, and is associated with a given graph. This is because it is an example of free construction since we're performing a process of completing a structure by minimally extending it to satisfy some laws.
+
+# 3.3
+Take the <= operator as a relation for a category. There is an identity morphism as every object is less than equal to itself. We also do have composition since a <= b && b <= c ==> a <= c.  So we do have identity morphisms and associative compositions.
+
+> A set with a relation like this is called a preorder, so a preorder is indeed a category.
+
+If you have a <= b and b <= a ==> a = b is called a partial order.
+
+If every two objects are in a relation with one another, then you have a total order.
+
+> A preorder is a category where there is at most one morphism going from any object a to any object b.
+
+This is called a thin category.
+
+Look at the set of morphisms from object a to b in some category C. This is called a hom-set, and is denoted by C(a,b). There are only two possible sizes for a hom-set in a preorder--again, this is because it is thin. If a <= b, then the hom-set is a singleton. Else, hom-set is empty. We can look at the category with all the same objects as the set, and morphisms existing between objects iff a <= b.
+
+Preorders can be cyclic, unlike partial orders.
+
+Sorting algorithms only work on total orders; partial orders need to use topological sorting.
+
+# 3.4
+A monoid is a set equipped with a binary operation which is associative and is associated with an identity element.
+
+Addition, multiplication, string concatenation are all examples of monoids.
+
+Haskell allows for _function_ equality as opposed to equality of the _values_ produced by functions. Function equality is checking for equality of morphisms in Hask. Value based equality is called "extensional" equality and asserts that given identical inputs, the functions will provide identical outputs. Function equality (w/o arguments) is point-free (you're not checking for equality at any particular points).
+
+Some basic stuff about Haskell and how to sorta implement monoids in C++
+
+# 3.5
+Now we will reframe monoid as a category instead of a set.
+
+Treat the operator as "moving" things in the set. $\forall n \in \mathbb{N}, \exists \text{ function } f \text{ such that } f(x) = x + n $ Call this an "adder." Note that the adder associated with 0 is the identity function, and composition of adders is equivalent to addition.
+
+> Now I want you to forget that you are dealing with the set of natural numbers and just think of it as a single object, a blob with a bunch of morphisms — the adders.
+
+Monoids are single object categories with a set of special morphisms which follow some rules.
+
+Oh hom-sets are simple--its just the set of all morphisms from a to b. Importantly, what clicked is that it is a set of morphisms.
+
+Set and category monoids are basically the same.
+
+# 3.6
+1. 
+a) Add identity arrow.
+
+b) ?
+
+c) Add identity arrows.
+
+d) Add identity arrow, then infinite arrows to the rest of the letters
+
+2.
+a) Partial. If $A \cap B = \emptyset$ then there is no ordering between the two, hence partial.
+
+b) No idea. Probably partial?
+
+3.
+AND identity is `True` & OR identity is `False.`
+
+4.
+`True`, `False`. `True` AND `True` is `True`. `True` AND `False` is `False.`
+
+5.
+Add 0, Add 1, Add 2. Add 0 * ANY = ANY. Add 1 * Add 2 = Add 0. Add 1 * Add 1 = Add 2. Add 2 * Add 2 = Add 1.
