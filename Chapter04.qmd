@@ -1,0 +1,183 @@
+---
+title: "Chapter 4"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+We can model non-pure functions using categories.
+
+Take this as our impure function:
+
+```{r}
+log <- ""
+
+negate <- function(b) {
+  log <<- paste0(log, "Not so! ")
+  !b
+}
+```
+
+Clearly has side effects.
+
+```{r}
+negate <- \(b, log) c(!b, paste0(log, "Not so! "))
+```
+
+We can easily rewrite to be pure, but this has problems, viz wrt memoization, since log is an input.
+
+What we can do then, is separate concerns by aggregating the logs between function calls as opposed to through the function itself.
+
+```{r}
+negate <- \(b) c(!b, "Not so! ")
+```
+
+Swapping examples
+
+```{r}
+#| eval: false
+toupper()
+toWords() <- \(s) strsplit(s, " ") |> unlist()
+```
+
+But now we want to include messages alongside regular output.
+
+Book uses C++ templates and all that jazz.
+
+```{r}
+tupperware <- \(s) c(toupper(s), "toUpper ")
+toWords <- \(s) c(strsplit(s, " "), "toWords ")
+```
+
+Now we want to compose these two.
+
+```{r}
+process <- function(s) {
+  p1 <- tupperware(s)
+  p2 <- toWords(p1[1])
+
+  c(p2[[1]], paste0(p1[2], p2[2]))
+}
+```
+
+Moving aggregation of logs into the wrapper function means that individual functions don't worry about the logs at all--they just return a consistent format and when composed, must be aggregated properly.
+
+But this is tedious and informal/error-prone. So we shall abstract it--with "it" being function composition.
+
+# 4.1
+
+Let us look again at a category of types and function--with the latter being the aforementioned logging/embellished functions.
+
+Take a predicate `isEven`,
+
+```{r}
+isEven <- \(n) list(n %% 2 == 0, "isEven ")
+negate <- \(b) list(!b, "Not so! ")
+```
+
+which we want to compose with our previous function, `negate`.
+
+```{r}
+isOdd <- function(n) {
+  p1 <- isEven(n)
+  p2 <- negate(p1[[1]])
+
+  c(p2[[1]], paste0(p1[[2]], p2[[2]]))
+}
+```
+
+There are some more template shenanigans. Since R is untyped we are avoiding a lot of the work.
+
+```{r}
+compose <- function(f, g) {
+  function(x) {
+    p1 <- f(x)
+    p2 <- g(p1[[1]])
+
+    c(p2[[1]], paste0(p1[[2]], p2[[2]]))
+  }
+}
+```
+
+Now we can rewrite process with this function factory.
+
+```{r}
+process <- \(s) compose(tupperware, toWords)(s)
+```
+
+However, we need a identity function.
+
+```{r}
+identity <- \(x) c(x, "")
+```
+
+We can generalize this further, away from just strings, by replacing `paste0` with a generic `mappend` and "" with `mempty`
+
+# 4.2
+
+Yay Haskell!
+
+Haskell's way of composition is >=>.
+
+# 4.3
+Kleisli categories are based on the infamous monad category.
+
+A K category has types as objects. Morphisms from type A to type B are functions that go from A to a type derived from B with a specific embellishment.
+
+> Each Kleisli category defines its own way of composing such morphisms, as well as the identity morphisms with respect to that composition.
+
+Embellishments are "endofunctors" somehow.
+
+# 4.4
+1.
+
+Yay S7!
+
+```{r}
+library(S7)
+
+Optional <- new_class(
+  "Optional",
+  properties = list(
+    value = new_property(
+      class = class_any,
+      setter = function(self, value) {
+        self@value <- value
+        self
+      },
+      getter = function(self) {
+        stopifnot(self@valid)
+
+        self@value
+      }
+    ),
+    valid = class_logical
+  )
+)
+
+compose <- function(f, g) {
+  function(x) {
+    p1 <- f(x)
+    tryCatch(
+      g(p1@value),
+      error = \(e) Optional()
+    )
+  }
+}
+
+identity <- \(x) Optional(x)
+```
+
+2.
+
+```{r}
+safe_reciprocal <- \(n) if (n != 0) Optional(1 / n) else Optional()
+safe_root <- \(n) if (n >= 0) Optional(sqrt(n)) else Optional()
+```
+
+3.
+
+```{r}
+safe_root_reciprocal <- compose(safe_reciprocal, safe_root)
+```
