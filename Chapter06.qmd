@@ -1,0 +1,138 @@
+---
+title: "Chapter 6"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+# 6.1
+
+A standard idea of the product of two types is a pair. Pairs are commutative up to isomorphism.
+
+```{r}
+swap <- \(x, y) c(y, x)
+```
+
+swap is clearly swap's inverse.
+
+The ordering can be thought of as just using a different format for storing data.
+
+Nested pairs are equivalent to tuples since associated pairs are equal up to isomorphism.
+
+Unit type is also the unit object for products.
+
+
+```{r}
+# NULL is inappropriate as unit, but good enough to get the point across
+rho <- \(x, y) x
+rho_inv <- \(x) c(x, "NULL")
+```
+
+Set is a monoidal category, i.e. it is a category which is also a monoid since you can multiply objects.
+
+> It’s often preferable to give names to components. A product type with named fields is called a record in Haskell, and a struct in C. 
+
+# 6.2
+
+Some Haskell stuff
+
+```{r}
+library(S7)
+
+Element <- new_class("Element", properties = list(name = class_character, symbol = class_character, atomicNumber = class_numeric))
+helium <- Element("Helium", "He", 2)
+
+helium@name
+helium@symbol
+helium@atomicNumber
+```
+
+Can easily use S7 classes as records.
+
+# 6.3
+
+Sum types are like Unions.
+
+Lots of details on the differences between Haskell and C++ wrt to unions.
+
+> In terms of types, we have Either as the monoidal operator and Void, the uninhabited type, as its neutral element.
+
+Haskell data types are immutable which allows you to deconstruct them well after construction through pattern matching and a re-use of constructors.
+
+# 6.4
+
+We've constructed two commutative monoids using the type system. Sum types have Void, and product types unit type as the "neutral" element. Void ~ 0, unit ~ 1.
+
+Intertwined monoids like these are called semi-rings. A full ring would need subtraction; we don't have subtraction of types. Semi-rings can be called rigs, since they are rings without negation. Ha ha.
+
+Refer to textbook for very cool look into structure of a list--an algebraic perspective. We have an algebra on types, which is why they're called algebraic data types.
+
+> Logical and & or also form a semiring, and it too can be mapped into type theory: 
+
+See text for table, but it's self explanatory. Void is FALSE, unit is TRUE, A or B is Either A B, A and B is a tuple (A, B).
+
+# 6.5
+
+1.
+
+Take maybes to eithers by giving back right value if just value exists, or left unit it doesn't. Simple to invert this too.
+
+2.
+The actual question is trivial, will answer using S7 which doesn't map completely.
+
+```{r}
+library(S7)
+
+Shape <- new_class("Shape", abstract = TRUE)
+Circle <- new_class("Circle", Shape, properties = list(radius = class_numeric))
+Rect <- new_class("Rect", Shape, properties = list(width = class_numeric, height = class_numeric))
+
+Area <- new_generic("Area", "x")
+method(Area, Circle) <- \(x) pi * x@radius^2
+method(Area, Rect) <- \(x) x@width * x@height
+
+circ <- Circle(4 / (sqrt(pi)))
+rect <- Rect(10, 4)
+
+Area(circ)
+Area(rect)
+```
+
+3.
+
+```{r}
+Circumference <- new_generic("Area", "x")
+method(Circumference, Circle) <- \(x) 2 * pi * x@radius
+method(Circumference, Rect) <- \(x) 2 * (x@width + x@height)
+
+Circumference(circ)
+Circumference(rect)
+```
+
+None of the original code.
+
+4.
+
+```{r}
+Square <- new_class("Square", Rect, constructor = function(side) new_object(Rect, width = side, height = side))
+square <- Square(5)
+
+Area(square)
+Circumference(square)
+```
+
+R can be quite functional, so again not much to be done. It's certainly not as clean as a Haskell implementation but clearly its very easy to extend these shapes using S7.
+
+5.
+
+a + a = 2 * a
+
+a + a is Either a a = Left a | Right a
+
+2 is data Bool = True | False 
+
+2 * a then is (Bool, a)
+
+So we need to find an iso from Either a a to (Bool, a). Take Either to Pair by giving the Bool in Pair TRUE if Left a, else FALSE. The inverse would then be mapping (TRUE, a) to Right a and the FALSE to Left a.
+

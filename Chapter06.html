@@ -8,7 +8,7 @@
 
 <meta name="author" content="Visruth">
 
-<title>Chapter 5</title>
+<title>Chapter 6</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3088,7 +3088,7 @@ vertical-align: -.125em;
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Chapter 5</h1>
+<h1 class="title">Chapter 6</h1>
 </div>
 
 
@@ -3111,155 +3111,144 @@ vertical-align: -.125em;
 </header>
 
 
-<p>Universal construction to define objects in terms of their relationships. You can pick a pattern from objects and morphisms and then look at all hits in a category. You need to rank these hits and pick the “best fit.”</p>
 <section id="section" class="level1">
-<h1>5.1</h1>
+<h1>6.1</h1>
+<p>A standard idea of the product of two types is a pair. Pairs are commutative up to isomorphism.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>swap <span class="ot">&lt;-</span> \(x, y) <span class="fu">c</span>(y, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>swap is clearly swap’s inverse.</p>
+<p>The ordering can be thought of as just using a different format for storing data.</p>
+<p>Nested pairs are equivalent to tuples since associated pairs are equal up to isomorphism.</p>
+<p>Unit type is also the unit object for products.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># NULL is inappropriate as unit, but good enough to get the point across</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>rho <span class="ot">&lt;-</span> \(x, y) x</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>rho_inv <span class="ot">&lt;-</span> \(x) <span class="fu">c</span>(x, <span class="st">&quot;NULL&quot;</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Set is a monoidal category, i.e. it is a category which is also a monoid since you can multiply objects.</p>
 <blockquote class="blockquote">
-<p>The simplest shape is a single object.</p>
+<p>It’s often preferable to give names to components. A product type with named fields is called a record in Haskell, and a struct in C.</p>
 </blockquote>
-<p>We can use morphisms to order a category by looking at morphisms between objects to try and find an fountainhead object. We say A is more initial than B if there exists an morphism from A to B.</p>
-<blockquote class="blockquote">
-<p>The initial object is the object that has one and only one morphism going to any object in the category.</p>
-</blockquote>
-<p>This doesn’t guarantee uniqueness–but it does guarantee uniqueness up to isomorphism.</p>
-<p>The initial object in a poset (partially ordered set) is its least element; the integers equipped with &lt;= don’t have an IO.</p>
-<p>The empty set is the IO for the category of sets and functions.</p>
-<p>Void is the initial object in the category of types. I think then that Java’s Object would be its initial category?</p>
 </section>
 <section id="section-1" class="level1">
-<h1>5.2</h1>
-<p>Similarly, we can look at the other end of the category. An object A is more terminal than B if there exists a morphism from B to A.</p>
-<blockquote class="blockquote">
-<p>The terminal object is the object with one and only one morphism coming to it from any object in the category.</p>
-</blockquote>
-<p>Up to isomorphism, unique.</p>
-<p>Naturally in a poset the term object is the biggest object. WRT sets, the term obj is a singleton.</p>
-<p>Uniqueness (one and only one) here is important because we can easily find other types which have morpshism from any object in the category. Predicates take any type to Bool–but you can find two</p>
-<pre><code>yes :: a -&gt; Bool
-yes _ = True 
-
-no :: a -&gt; Bool 
-no _ = False </code></pre>
-<p>So Bool isn’t the TO.</p>
+<h1>6.2</h1>
+<p>Some Haskell stuff</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(S7)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Element <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Element&quot;</span>, <span class="at">properties =</span> <span class="fu">list</span>(<span class="at">name =</span> class_character, <span class="at">symbol =</span> class_character, <span class="at">atomicNumber =</span> class_numeric))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>helium <span class="ot">&lt;-</span> <span class="fu">Element</span>(<span class="st">&quot;Helium&quot;</span>, <span class="st">&quot;He&quot;</span>, <span class="dv">2</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>helium<span class="sc">@</span>name</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;Helium&quot;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>helium<span class="sc">@</span>symbol</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] &quot;He&quot;</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>helium<span class="sc">@</span>atomicNumber</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2</code></pre>
+</div>
+</div>
+<p>Can easily use S7 classes as records.</p>
 </section>
 <section id="section-2" class="level1">
-<h1>5.3</h1>
+<h1>6.3</h1>
+<p>Sum types are like Unions.</p>
+<p>Lots of details on the differences between Haskell and C++ wrt to unions.</p>
 <blockquote class="blockquote">
-<p>It turns out that for any category C we can define the opposite category C^OP just by reversing all the arrows.</p>
+<p>In terms of types, we have Either as the monoidal operator and Void, the uninhabited type, as its neutral element.</p>
 </blockquote>
-<p>This duality is important because it means that proofs in one direction (i.e. on C) will automatically garner a tandem proof on Cop. Stuff in Cop is typically prefaced with “co” so monads correspond to comonads, etc.</p>
-<p>Clearly, TO of C is IO in COP</p>
+<p>Haskell data types are immutable which allows you to deconstruct them well after construction through pattern matching and a re-use of constructors.</p>
 </section>
 <section id="section-3" class="level1">
-<h1>5.4</h1>
-<p>Isomorphic objects “look the same”–literally translated they have the same shape.</p>
-<p>In Cat Theory,</p>
+<h1>6.4</h1>
+<p>We’ve constructed two commutative monoids using the type system. Sum types have Void, and product types unit type as the “neutral” element. Void ~ 0, unit ~ 1.</p>
+<p>Intertwined monoids like these are called semi-rings. A full ring would need subtraction; we don’t have subtraction of types. Semi-rings can be called rigs, since they are rings without negation. Ha ha.</p>
+<p>Refer to textbook for very cool look into structure of a list–an algebraic perspective. We have an algebra on types, which is why they’re called algebraic data types.</p>
 <blockquote class="blockquote">
-<p>An isomorphism is an invertible morphism</p>
+<p>Logical and &amp; or also form a semiring, and it too can be mapped into type theory:</p>
 </blockquote>
-<p>There is a neat proof in the book on uniqueness up to isomorphism of the IO.</p>
-<blockquote class="blockquote">
-<p>This “uniqueness up to unique isomorphism” is the important property of all universal constructions.</p>
-</blockquote>
+<p>See text for table, but it’s self explanatory. Void is FALSE, unit is TRUE, A or B is Either A B, A and B is a tuple (A, B).</p>
 </section>
 <section id="section-4" class="level1">
-<h1>5.5</h1>
-<p>We want to generalize the notion of a Cartesian product to other categories besides sets.</p>
-<p>Take two functions fst and snd which do as they say.</p>
-<p>Take objects A, B, C. Further take morphism P which takes C to A, and similarly Q taking C to B.</p>
-<p>C is not unique.</p>
-<blockquote class="blockquote">
-<p>We want to compare one candidate object C and its two projections P and Q with another candidate object C′ and its two projections P′ and Q′.</p>
-</blockquote>
-<p>We want the “best” object to be the product, a canonical answer of sorts. As such, we want a C which all other C’ can be mapped to. Just asserting there exists morphism M from C’ to C is too weak. We want C’s projections (P and Q) to be “more universal” P’ and Q’.</p>
-<p>I.e, P’ and Q’ can be “factorized” by M.</p>
-<pre><code>p&#39; = p . m 
-q&#39; = q . m </code></pre>
-<blockquote class="blockquote">
-<p>A product of two objects A and B is the object C equipped with two projections such that for any other object C′ equipped with two projections there is a unique morphism M from C′ to C that factorizes those projections.</p>
-</blockquote>
-<pre><code>factorizer :: (c -&gt; a) -&gt; (c -&gt; b) -&gt; (c -&gt; (a, b))
-factorizer p q = \x -&gt; (p x, q x)</code></pre>
-</section>
-<section id="section-5" class="level1">
-<h1>5.6</h1>
-<p>The reversal of the product is the coproduct. The coproduct has injections, morphisms from A and B to C.</p>
-<p>See book for def of coproduct–similar to product of course.</p>
-<p>In setland, coproduct is disjoint union.</p>
-<p>In codeland, disjoint unions are tagged unions of types (AKA variants.)</p>
-<pre><code>data Contact = PhoneNum Int | EmailAddr String 
-
-helpdesk :: Contact 
-helpdesk = PhoneNum 2222222 </code></pre>
-</section>
-<section id="section-6" class="level1">
-<h1>5.7</h1>
-<p>Note that IO and TO are very different (e.g. in Sets) but are related as noted by the “co.”</p>
-<blockquote class="blockquote">
-<p>We’ll see later that product behaves like multiplication, with the terminal object playing the role of one; whereas coproduct behaves more like the sum, with the initial object playing the role of zero.</p>
-</blockquote>
-<p>See book for more on this, but functions are (in general) asymmetric.</p>
-<p>Book then introduces bi/sur/injections</p>
-</section>
-<section id="section-7" class="level1">
-<h1>5.8</h1>
+<h1>6.5</h1>
 <ol type="1">
 <li></li>
 </ol>
-<p>Suppose to the contrary that we have two terminal objects A and B. This means that exists morphisms m: A -&gt; B and n: B -&gt; A, and these are the only morphisms from A to B and B to A since A, B terminal. There exists one morphism from B -&gt; B: the identity. However, we can see that n . m: B -&gt; B (similarly for A) so n . m must be the identity–so A and B are equivalent (up to isomorphism.)</p>
+<p>Take maybes to eithers by giving back right value if just value exists, or left unit it doesn’t. Simple to invert this too.</p>
 <ol start="2" type="1">
-<li></li>
+<li>The actual question is trivial, will answer using S7 which doesn’t map completely.</li>
 </ol>
-<p>Product of A, B in poset is the largest object C which is smaller than A and B. Inf?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(S7)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>Shape <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Shape&quot;</span>, <span class="at">abstract =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>Circle <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Circle&quot;</span>, Shape, <span class="at">properties =</span> <span class="fu">list</span>(<span class="at">radius =</span> class_numeric))</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Rect <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Rect&quot;</span>, Shape, <span class="at">properties =</span> <span class="fu">list</span>(<span class="at">width =</span> class_numeric, <span class="at">height =</span> class_numeric))</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>Area <span class="ot">&lt;-</span> <span class="fu">new_generic</span>(<span class="st">&quot;Area&quot;</span>, <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">method</span>(Area, Circle) <span class="ot">&lt;-</span> \(x) pi <span class="sc">*</span> x<span class="sc">@</span>radius<span class="sc">^</span><span class="dv">2</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">method</span>(Area, Rect) <span class="ot">&lt;-</span> \(x) x<span class="sc">@</span>width <span class="sc">*</span> x<span class="sc">@</span>height</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>circ <span class="ot">&lt;-</span> <span class="fu">Circle</span>(<span class="dv">4</span> <span class="sc">/</span> (<span class="fu">sqrt</span>(pi)))</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>rect <span class="ot">&lt;-</span> <span class="fu">Rect</span>(<span class="dv">10</span>, <span class="dv">4</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">Area</span>(circ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 16</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Area</span>(rect)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 40</code></pre>
+</div>
+</div>
 <ol start="3" type="1">
 <li></li>
 </ol>
-<p>Analogously, C which is the smallest object larger than A and B. Sup?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>Circumference <span class="ot">&lt;-</span> <span class="fu">new_generic</span>(<span class="st">&quot;Area&quot;</span>, <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">method</span>(Circumference, Circle) <span class="ot">&lt;-</span> \(x) <span class="dv">2</span> <span class="sc">*</span> pi <span class="sc">*</span> x<span class="sc">@</span>radius</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">method</span>(Circumference, Rect) <span class="ot">&lt;-</span> \(x) <span class="dv">2</span> <span class="sc">*</span> (x<span class="sc">@</span>width <span class="sc">+</span> x<span class="sc">@</span>height)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">Circumference</span>(circ)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 14.17963</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Circumference</span>(rect)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 28</code></pre>
+</div>
+</div>
+<p>None of the original code.</p>
 <ol start="4" type="1">
 <li></li>
 </ol>
-<p>Wonky in R, but I’ll give it a go?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(S7)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Either <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">left =</span> <span class="cn">NULL</span>, <span class="at">right =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> ((<span class="sc">!</span><span class="fu">is.null</span>(left) <span class="sc">&amp;&amp;</span> <span class="sc">!</span><span class="fu">is.null</span>(right)) <span class="sc">||</span> (<span class="fu">is.null</span>(left) <span class="sc">&amp;&amp;</span> <span class="fu">is.null</span>(right))) {</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Provide one and only one value.&quot;</span>)</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(left)) {</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Left</span>(left)</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(right)) {</span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Right</span>(right)</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Make empty parent class?</span></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="co"># No type checking, though trivial to implement by passing a type in constructor and adjusting @value to have validation</span></span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>Left <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Left&quot;</span>, <span class="at">properties =</span> <span class="fu">list</span>(<span class="at">value =</span> class_any))</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>Right <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Right&quot;</span>, <span class="at">properties =</span> <span class="fu">list</span>(<span class="at">value =</span> class_any))</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a><span class="fu">Either</span>(<span class="at">left =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Square <span class="ot">&lt;-</span> <span class="fu">new_class</span>(<span class="st">&quot;Square&quot;</span>, Rect, <span class="at">constructor =</span> <span class="cf">function</span>(side) <span class="fu">new_object</span>(Rect, <span class="at">width =</span> side, <span class="at">height =</span> side))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>square <span class="ot">&lt;-</span> <span class="fu">Square</span>(<span class="dv">5</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">Area</span>(square)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>&lt;Left&gt;
- @ value: num 1</code></pre>
+<pre><code>[1] 25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Circumference</span>(square)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20</code></pre>
 </div>
 </div>
+<p>R can be quite functional, so again not much to be done. It’s certainly not as clean as a Haskell implementation but clearly its very easy to extend these shapes using S7.</p>
 <ol start="5" type="1">
 <li></li>
 </ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>i <span class="ot">&lt;-</span> \(n) n</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>j <span class="ot">&lt;-</span> \(b) <span class="fu">as.integer</span>(b)</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="cf">function</span>(either) {</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># if there was a parent Either class, could assert that either is an instance of Either</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">S7_inherits</span>(either, Left)) {</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">i</span>(either<span class="sc">@</span>value)</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">S7_inherits</span>(either, Right)) {</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="fu">j</span>(either<span class="sc">@</span>value)</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>6-8?</p>
+<p>a + a = 2 * a</p>
+<p>a + a is Either a a = Left a | Right a</p>
+<p>2 is data Bool = True | False</p>
+<p>2 * a then is (Bool, a)</p>
+<p>So we need to find an iso from Either a a to (Bool, a). Take Either to Pair by giving the Bool in Pair TRUE if Left a, else FALSE. The inverse would then be mapping (TRUE, a) to Right a and the FALSE to Left a.</p>
 </section>
 
 </main>
