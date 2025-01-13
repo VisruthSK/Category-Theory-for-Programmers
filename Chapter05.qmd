@@ -1,0 +1,171 @@
+---
+title: "Chapter 5"
+format: 
+  html:
+    embed-resources: true
+author: Visruth
+---
+
+Universal construction to define objects in terms of their relationships. You can pick a pattern from objects and morphisms and then look at all hits in a category. You need to rank these hits and pick the "best fit."
+
+# 5.1
+> The simplest shape is a single object.
+
+We can use morphisms to order a category by looking at morphisms between objects to try and find an fountainhead object. We say A is more initial than B if there exists an morphism from A to B.
+
+> The initial object is the object that has one and only one morphism going to any object in the category. 
+
+This doesn't guarantee uniqueness--but it does guarantee uniqueness up to isomorphism.
+
+The initial object in a poset (partially ordered set) is its least element; the integers equipped with <= don't have an IO.
+
+The empty set is the IO for the category of sets and functions.
+
+Void is the initial object in the category of types. I think then that Java's Object would be its initial category?
+
+# 5.2
+Similarly, we can look at the other end of the category. An object A is more terminal than B if there exists a morphism from B to A.
+
+> The terminal object is the object with one and only one morphism coming to it from any object in the category. 
+
+Up to isomorphism, unique.
+
+Naturally in a poset the term object is the biggest object. WRT sets, the term obj is a singleton.
+
+Uniqueness (one and only one) here is important because we can easily find other types which have morpshism from any object in the category. Predicates take any type to Bool--but you can find two
+
+```
+yes :: a -> Bool
+yes _ = True 
+
+no :: a -> Bool 
+no _ = False 
+```
+So Bool isn't the TO.
+
+# 5.3
+> It turns out that for any category C we can define the opposite category C^OP just by reversing all the arrows.
+
+This duality is important because it means that proofs in one direction (i.e. on C) will automatically garner a tandem proof on Cop. Stuff in Cop is typically prefaced with "co" so monads correspond to comonads, etc.
+
+Clearly, TO of C is IO in COP
+
+# 5.4
+Isomorphic objects "look the same"--literally translated they have the same shape.
+
+In Cat Theory,  
+
+> An isomorphism is an invertible morphism
+
+There is a neat proof in the book on uniqueness up to isomorphism of the IO.
+
+
+> This “uniqueness up to unique isomorphism” is the important property of all universal constructions. 
+
+# 5.5
+We want to generalize the notion of a Cartesian product to other categories besides sets.
+
+Take two functions fst and snd which do as they say.
+
+Take objects A, B, C. Further take morphism P which takes C to A, and similarly Q taking C to B.
+
+C is not unique.
+
+> We want to compare one candidate object C and its two projections P and Q with another candidate object C′ and its two projections P′ and Q′.
+
+We want the "best" object to be the product, a canonical answer of sorts. As such, we want a C which all other C' can be mapped to. Just asserting there exists morphism M from C' to C is too weak. We want C's projections (P and Q) to be "more universal" P' and Q'.
+
+I.e, P' and Q' can be "factorized" by M. 
+
+```
+p' = p . m 
+q' = q . m 
+```
+
+> A product of two objects A and B is the object C equipped with two projections such that for any other object C′ equipped with two projections there is a unique morphism M from C′ to C that factorizes those projections. 
+
+```
+factorizer :: (c -> a) -> (c -> b) -> (c -> (a, b))
+factorizer p q = \x -> (p x, q x)
+```
+
+# 5.6
+The reversal of the product is the coproduct. The coproduct has injections, morphisms from A and B to C.
+
+See book for def of coproduct--similar to product of course.
+
+In setland, coproduct is disjoint union.
+
+In codeland, disjoint unions are tagged unions of types (AKA variants.)
+
+```
+data Contact = PhoneNum Int | EmailAddr String 
+
+helpdesk :: Contact 
+helpdesk = PhoneNum 2222222 
+```
+
+# 5.7
+Note that IO and TO are very different (e.g. in Sets) but are related as noted by the "co."
+
+> We’ll see later that product behaves like multiplication, with the terminal object playing the role of one; whereas coproduct behaves more like the sum, with the initial object playing the role of zero.
+
+See book for more on this, but functions are (in general) asymmetric.
+
+Book then introduces bi/sur/injections
+
+# 5.8
+1.
+
+Suppose to the contrary that we have two terminal objects A and B. This means that exists morphisms m: A -> B and n: B -> A, and these are the only morphisms from A to B and B to A since A, B terminal. There exists one morphism from B -> B: the identity. However, we can see that n . m: B -> B (similarly for A) so n . m must be the identity--so A and B are equivalent (up to isomorphism.)
+
+2.
+
+Product of A, B in poset is the largest object C which is smaller than A and B. Inf?
+
+3.
+
+Analogously, C which is the smallest object larger than A and B. Sup?
+
+4.
+
+Wonky in R, but I'll give it a go?
+
+```{r}
+library(S7)
+
+Either <- function(left = NULL, right = NULL) {
+  if ((!is.null(left) && !is.null(right)) || (is.null(left) && is.null(right))) {
+    stop("Provide one and only one value.")
+  }
+  if (!is.null(left)) {
+    Left(left)
+  } else if (!is.null(right)) {
+    Right(right)
+  }
+}
+
+# Make empty parent class?
+# No type checking, though trivial to implement by passing a type in constructor and adjusting @value to have validation
+Left <- new_class("Left", properties = list(value = class_any))
+Right <- new_class("Right", properties = list(value = class_any))
+
+Either(left = 1)
+```
+
+5.
+
+```{r}
+i <- \(n) n
+j <- \(b) as.integer(b)
+m <- function(either) {
+  # if there was a parent Either class, could assert that either is an instance of Either
+  if (S7_inherits(either, Left)) {
+    i(either@value)
+  } else if (S7_inherits(either, Right)) {
+    j(either@value)
+  }
+}
+```
+
+6-8?
